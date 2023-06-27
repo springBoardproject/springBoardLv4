@@ -57,14 +57,14 @@ public class BoardService {
         return boardResponseDto;
     }
 
-    public Long deleteBoard(Long id, BoardRequestDto requestDto) {
+    public String deleteBoard(Long id, BoardRequestDto requestDto) {
         // 해당 메모가 DB에 존재하는지 확인
         Board board = findBoard(id);
         // 비밀번호 확인
         checkPassword(board, requestDto);
         // 삭제
         boardRepository.delete(board);
-        return id;
+        return "Success";
 
     }
 

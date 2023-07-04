@@ -11,24 +11,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({IllegalArgumentException.class})
-    public ResponseEntity<StatusCodesResponseDto> handleException(IllegalArgumentException ex) {
+    public StatusCodesResponseDto handleException(IllegalArgumentException ex) {
         StatusCodesResponseDto restApiException = new StatusCodesResponseDto(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
-        return new ResponseEntity<>(
-                // HTTP body
-                restApiException,
-                // HTTP status code
-                HttpStatus.BAD_REQUEST
-        );
+        return restApiException;
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<StatusCodesResponseDto> handleException(MethodArgumentNotValidException ex) {
+    public StatusCodesResponseDto handleException(MethodArgumentNotValidException ex) {
         StatusCodesResponseDto restApiException = new StatusCodesResponseDto(HttpStatus.BAD_REQUEST.value(), ex.getFieldError().getDefaultMessage());
-        return new ResponseEntity<>(
-                // HTTP body
-                restApiException,
-                // HTTP status code
-                HttpStatus.BAD_REQUEST
-        );
+        return restApiException;
     }
 }

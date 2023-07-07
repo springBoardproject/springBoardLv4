@@ -8,5 +8,5 @@ public class BoardRequestDto {
     @NotBlank
     private String title;
     @NotBlank
-    private String content;
+    private String contents;
 }

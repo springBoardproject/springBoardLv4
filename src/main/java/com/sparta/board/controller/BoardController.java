@@ -3,6 +3,7 @@ package com.sparta.board.controller;
 import com.sparta.board.dto.BoardRequestDto;
 import com.sparta.board.dto.BoardResponseDto;
 import com.sparta.board.dto.StatusCodesResponseDto;
+import com.sparta.board.entity.User;
 import com.sparta.board.jwt.JwtUtil;
 import com.sparta.board.service.BoardService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ public class BoardController {
     @PostMapping()
     public BoardResponseDto createBoard(@RequestBody @Valid BoardRequestDto requestDto,
                                         HttpServletRequest request) {
+
         User user = (User) request.getAttribute("user");
         System.out.println("user.getUsername() = " + user.getUsername());
         return boardService.createBoard(requestDto, user);

@@ -4,6 +4,7 @@ import com.sparta.board.dto.BoardRequestDto;
 import com.sparta.board.dto.BoardResponseDto;
 import com.sparta.board.dto.StatusCodesResponseDto;
 import com.sparta.board.entity.Board;
+import com.sparta.board.entity.User;
 import com.sparta.board.jwt.JwtUtil;
 import com.sparta.board.repository.BoardRepository;
 import io.jsonwebtoken.Claims;
@@ -21,11 +22,9 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final JwtUtil jwtUtil;
 
-    public BoardResponseDto createBoard(BoardRequestDto requestDto, String token) {
-        // 토큰으로 부터 유저이름 가져오기
-        String username = getUsername(token);
-
-        Board board = new Board(requestDto, username);
+    public BoardResponseDto createBoard(BoardRequestDto requestDto, User user) {
+        System.out.println("username : " + user.getUsername());
+        Board board = new Board(requestDto, user.getUsername());
         // DB 저장 넘겨주기
         Board saveBoard = boardRepository.save(board);
 

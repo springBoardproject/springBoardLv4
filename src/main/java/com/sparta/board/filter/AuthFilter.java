@@ -9,11 +9,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 
 @Slf4j(topic = "AuthFilter")
+@Component
 @RequiredArgsConstructor
 @Order(1)
 public class AuthFilter implements Filter {

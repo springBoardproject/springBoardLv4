@@ -52,8 +52,7 @@ public class BoardService {
         // 수정
         board.update(requestDto);
         // Entity -> ResponseDto
-        BoardResponseDto boardResponseDto = new BoardResponseDto(board);
-        return boardResponseDto;
+        return new BoardResponseDto(board);
     }
 
     public StatusCodesResponseDto deleteBoard(Long id, String username) {
@@ -64,9 +63,7 @@ public class BoardService {
         // 삭제
         boardRepository.delete(board);
 
-        StatusCodesResponseDto responseDto = new StatusCodesResponseDto(HttpStatus.OK.value(), "삭제가 완료 되었습니다.");
-
-        return responseDto;
+        return new StatusCodesResponseDto(HttpStatus.OK.value(), "삭제가 완료 되었습니다.");
 
     }
 

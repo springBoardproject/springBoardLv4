@@ -23,10 +23,10 @@ public class BoardService {
     private final JwtUtil jwtUtil;
 
     public BoardResponseDto createBoard(BoardRequestDto requestDto, User user) {
+        System.out.println("user.getUsername() = " + user.getUsername());
         Board board = new Board(requestDto, user.getUsername());
         // DB 저장 넘겨주기
         Board saveBoard = boardRepository.save(board);
-
         // Entity -> ResponseDto
         return new BoardResponseDto(saveBoard);
     }
@@ -39,17 +39,15 @@ public class BoardService {
         // 해당 메모가 DB에 존재하는지 확인
         Board board = findBoard(id);
         // Entity -> ResponseDto
-        BoardResponseDto boardResponseDto = new BoardResponseDto(board);
-        return boardResponseDto;
+        return new BoardResponseDto(board);
     }
 
     @Transactional
     public BoardResponseDto updateBoard(Long id, BoardRequestDto requestDto, User user) {
         // 해당 메모가 DB에 존재하는지 확인
         Board board = findBoard(id);
-        // username 확인
-        checkUsername(board, user.getUsername());
-
+        // 권한 확인
+        checkAuthority(board, user);
         // 수정
         board.update(requestDto);
         // Entity -> ResponseDto
@@ -59,8 +57,8 @@ public class BoardService {
     public StatusCodesResponseDto deleteBoard(Long id, User user) {
         // 해당 메모가 DB에 존재하는지 확인
         Board board = findBoard(id);
-        // username 확인
-        checkUsername(board, user.getUsername());
+        // 권한 확인
+        checkAuthority(board, user);
         // 삭제
         boardRepository.delete(board);
 

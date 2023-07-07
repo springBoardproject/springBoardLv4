@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,30 +33,33 @@ public class BoardController {
     }
 
     @GetMapping()
-    public List<BoardResponseDto> getBoards() {
-        return boardService.getBoards();
+    public ResponseEntity<List<BoardResponseDto>> getBoards() {
+//        return boardService.getBoards();
+        return new ResponseEntity<>(boardService.getBoards(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public BoardResponseDto getSelectedBoard(@PathVariable Long id) {
-        return boardService.getSelectedBoard(id);
+    public ResponseEntity<BoardResponseDto> getSelectedBoard(@PathVariable Long id) {
+//        return boardService.getSelectedBoard(id);
+        return new ResponseEntity<>(boardService.getSelectedBoard(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public BoardResponseDto updateBoard(@PathVariable Long id,
+    public ResponseEntity<BoardResponseDto> updateBoard(@PathVariable Long id,
                                         @RequestBody @Valid BoardRequestDto requestDto,
                                         HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
-//        String token = authentication(req);
-        return boardService.updateBoard(id, requestDto, user);
+//        return boardService.updateBoard(id, requestDto, user);
+        return new ResponseEntity<>(boardService.updateBoard(id, requestDto, user), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public StatusCodesResponseDto deleteBoard(@PathVariable Long id,
-                                              HttpServletRequest request) {
+    public ResponseEntity<StatusCodesResponseDto> deleteBoard(@PathVariable Long id,
+                                      HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
 //        String token = authentication(req);
-        return boardService.deleteBoard(id, user);
+        return new ResponseEntity<>(boardService.deleteBoard(id, user), HttpStatus.OK);
+//        return ResponseEntity.ok(boardService.deleteBoard(id, user));
     }
 
 //    private String authentication(HttpServletRequest req) {

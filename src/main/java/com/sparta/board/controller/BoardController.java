@@ -26,10 +26,11 @@ public class BoardController {
     private final JwtUtil jwtUtil;
 
     @PostMapping()
-    public BoardResponseDto createBoard(@RequestBody @Valid BoardRequestDto requestDto,
+    public ResponseEntity<BoardResponseDto> createBoard(@RequestBody @Valid BoardRequestDto requestDto,
                                         HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
-        return boardService.createBoard(requestDto, user);
+//        return boardService.createBoard(requestDto, user);
+        return new ResponseEntity<>(boardService.createBoard(requestDto, user), HttpStatus.CREATED) ;
     }
 
     @GetMapping()

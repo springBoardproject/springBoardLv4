@@ -24,6 +24,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
+    @Value("${adimin.token}") // Base64 Encode 한 SecretKey
+    private String ADMIN_TOKEN;
+
     public StatusCodesResponseDto signup(SignupRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());

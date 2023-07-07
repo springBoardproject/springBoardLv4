@@ -9,6 +9,7 @@ import com.sparta.board.jwt.JwtUtil;
 import com.sparta.board.repository.BoardRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final JwtUtil jwtUtil;
+
+
 
     public BoardResponseDto createBoard(BoardRequestDto requestDto, User user) {
         System.out.println("user.getUsername() = " + user.getUsername());
@@ -80,10 +83,14 @@ public class BoardService {
 //
 //        return username;
 //    }
-
-    private void checkUsername(Board board, String username) {
-        if (!board.getUsername().equals(username)) {
-            throw new IllegalArgumentException("작성자가 아닙니다.");
+    
+    private void checkAuthority(Board board, User user) {
+        // admin 확인
+        if(!user.getRole().getAuthority().equals("ROLE_ADMIN")){
+            // username 확인
+            if (!board.getUsername().equals(user.getUsername())) {
+                throw new IllegalArgumentException("작성자가 아닙니다.");
+            }
         }
     }
 }

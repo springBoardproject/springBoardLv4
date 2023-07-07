@@ -22,8 +22,8 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final JwtUtil jwtUtil;
 
-    public BoardResponseDto createBoard(BoardRequestDto requestDto, String username) {
-        Board board = new Board(requestDto, username);
+    public BoardResponseDto createBoard(BoardRequestDto requestDto, User user) {
+        Board board = new Board(requestDto, user.getUsername());
         // DB 저장 넘겨주기
         Board saveBoard = boardRepository.save(board);
 
@@ -44,22 +44,23 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardResponseDto updateBoard(Long id, BoardRequestDto requestDto, String username) {
+    public BoardResponseDto updateBoard(Long id, BoardRequestDto requestDto, User user) {
         // 해당 메모가 DB에 존재하는지 확인
         Board board = findBoard(id);
         // username 확인
-        checkUsername(board, username);
+        checkUsername(board, user.getUsername());
+
         // 수정
         board.update(requestDto);
         // Entity -> ResponseDto
         return new BoardResponseDto(board);
     }
 
-    public StatusCodesResponseDto deleteBoard(Long id, String username) {
+    public StatusCodesResponseDto deleteBoard(Long id, User user) {
         // 해당 메모가 DB에 존재하는지 확인
         Board board = findBoard(id);
         // username 확인
-        checkUsername(board, username);
+        checkUsername(board, user.getUsername());
         // 삭제
         boardRepository.delete(board);
 

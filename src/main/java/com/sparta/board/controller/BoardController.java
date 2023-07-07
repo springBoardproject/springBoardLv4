@@ -27,7 +27,7 @@ public class BoardController {
     public BoardResponseDto createBoard(@RequestBody @Valid BoardRequestDto requestDto,
                                         HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
-        return boardService.createBoard(requestDto, user.getUsername());
+        return boardService.createBoard(requestDto, user);
     }
 
     @GetMapping()
@@ -46,7 +46,7 @@ public class BoardController {
                                         HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
 //        String token = authentication(req);
-        return boardService.updateBoard(id, requestDto, user.getUsername());
+        return boardService.updateBoard(id, requestDto, user);
     }
 
     @DeleteMapping("/{id}")
@@ -54,7 +54,7 @@ public class BoardController {
                                               HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
 //        String token = authentication(req);
-        return boardService.deleteBoard(id, user.getUsername());
+        return boardService.deleteBoard(id, user);
     }
 
 //    private String authentication(HttpServletRequest req) {

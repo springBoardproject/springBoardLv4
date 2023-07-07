@@ -17,8 +17,8 @@ public class Board extends Timestamped{
     private String title;
     @Column(name = "username", nullable = false) // foreign key 어캐하지?
     private String username;
-    @Column(name = "content", nullable = false, length = 500)
-    private String content;
+    @Column(name = "contents", nullable = false, length = 500)
+    private String contents;
 
     public Board(BoardRequestDto requestDto, String username) {
         this.title = requestDto.getTitle();

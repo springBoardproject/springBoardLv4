@@ -30,9 +30,7 @@ public class BoardService {
         Board saveBoard = boardRepository.save(board);
 
         // Entity -> ResponseDto
-        BoardResponseDto boardResponseDto = new BoardResponseDto(saveBoard);
-
-        return boardResponseDto;
+        return new BoardResponseDto(saveBoard);
     }
     public List<BoardResponseDto> getBoards() {
         // db 조회 넘겨주기

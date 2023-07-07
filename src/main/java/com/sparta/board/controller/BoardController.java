@@ -24,11 +24,10 @@ public class BoardController {
 
     @PostMapping()
     public BoardResponseDto createBoard(@RequestBody @Valid BoardRequestDto requestDto,
-                                        HttpServletRequest req) {
-
-        String token = authentication(req);
-
-        return boardService.createBoard(requestDto, token);
+                                        HttpServletRequest request) {
+        User user = (User) request.getAttribute("user");
+        System.out.println("user.getUsername() = " + user.getUsername());
+        return boardService.createBoard(requestDto, user);
     }
 
     @GetMapping()

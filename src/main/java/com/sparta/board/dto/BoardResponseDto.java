@@ -10,7 +10,7 @@ public class BoardResponseDto {
     private Long id;
     private String title;
     private String username;
-    private String content;
+    private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
@@ -18,7 +18,7 @@ public class BoardResponseDto {
         this.id = board.getId();
         this.title = board.getTitle();
         this.username = board.getUsername();
-        this.content = board.getContent();
+        this.contents = board.getContents();
         this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
     }

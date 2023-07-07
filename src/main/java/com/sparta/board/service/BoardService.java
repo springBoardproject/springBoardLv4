@@ -22,9 +22,8 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final JwtUtil jwtUtil;
 
-    public BoardResponseDto createBoard(BoardRequestDto requestDto, User user) {
-        System.out.println("username : " + user.getUsername());
-        Board board = new Board(requestDto, user.getUsername());
+    public BoardResponseDto createBoard(BoardRequestDto requestDto, String username) {
+        Board board = new Board(requestDto, username);
         // DB 저장 넘겨주기
         Board saveBoard = boardRepository.save(board);
 
@@ -45,11 +44,11 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardResponseDto updateBoard(Long id, BoardRequestDto requestDto, String token) {
+    public BoardResponseDto updateBoard(Long id, BoardRequestDto requestDto, String username) {
         // 해당 메모가 DB에 존재하는지 확인
         Board board = findBoard(id);
         // username 확인
-        checkUsername(board, token);
+        checkUsername(board, username);
         // 수정
         board.update(requestDto);
         // Entity -> ResponseDto
@@ -57,11 +56,11 @@ public class BoardService {
         return boardResponseDto;
     }
 
-    public StatusCodesResponseDto deleteBoard(Long id, String token) {
+    public StatusCodesResponseDto deleteBoard(Long id, String username) {
         // 해당 메모가 DB에 존재하는지 확인
         Board board = findBoard(id);
         // username 확인
-        checkUsername(board, token);
+        checkUsername(board, username);
         // 삭제
         boardRepository.delete(board);
 
@@ -77,18 +76,16 @@ public class BoardService {
         );
     }
 
-    private String getUsername(String token) {
-        // 토큰에서 사용자 정보 가져오기
-        Claims info = jwtUtil.getUserInfoFromToken(token);
-        // 사용자 username
-        String username = info.getSubject();
+//    private String getUsername(String token) {
+//        // 토큰에서 사용자 정보 가져오기
+//        Claims info = jwtUtil.getUserInfoFromToken(token);
+//        // 사용자 username
+//        String username = info.getSubject();
+//
+//        return username;
+//    }
 
-        return username;
-    }
-
-    private void checkUsername(Board board, String token) {
-        String username = getUsername(token);
-
+    private void checkUsername(Board board, String username) {
         if (!board.getUsername().equals(username)) {
             throw new IllegalArgumentException("작성자가 아닙니다.");
         }

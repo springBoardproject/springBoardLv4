@@ -26,10 +26,8 @@ public class BoardController {
     @PostMapping()
     public BoardResponseDto createBoard(@RequestBody @Valid BoardRequestDto requestDto,
                                         HttpServletRequest request) {
-
         User user = (User) request.getAttribute("user");
-        System.out.println("user.getUsername() = " + user.getUsername());
-        return boardService.createBoard(requestDto, user);
+        return boardService.createBoard(requestDto, user.getUsername());
     }
 
     @GetMapping()
@@ -45,29 +43,31 @@ public class BoardController {
     @PutMapping("/{id}")
     public BoardResponseDto updateBoard(@PathVariable Long id,
                                         @RequestBody @Valid BoardRequestDto requestDto,
-                                        HttpServletRequest req) {
-        String token = authentication(req);
-        return boardService.updateBoard(id, requestDto, token);
+                                        HttpServletRequest request) {
+        User user = (User) request.getAttribute("user");
+//        String token = authentication(req);
+        return boardService.updateBoard(id, requestDto, user.getUsername());
     }
 
     @DeleteMapping("/{id}")
     public StatusCodesResponseDto deleteBoard(@PathVariable Long id,
-                                              HttpServletRequest req) {
-        String token = authentication(req);
-        return boardService.deleteBoard(id, token);
+                                              HttpServletRequest request) {
+        User user = (User) request.getAttribute("user");
+//        String token = authentication(req);
+        return boardService.deleteBoard(id, user.getUsername());
     }
 
-    private String authentication(HttpServletRequest req) {
-        // 토큰값 가져오기
-        String tokenValue = jwtUtil.getTokenFromRequest(req);
-        // JWT 토큰 substring
-        String token = jwtUtil.substringToken(tokenValue);
-
-        // 토큰 검증
-        if(!jwtUtil.validateToken(token)){
-            throw new IllegalArgumentException("Token Error");
-        }
-
-        return token;
-    }
+//    private String authentication(HttpServletRequest req) {
+//        // 토큰값 가져오기
+//        String tokenValue = jwtUtil.getTokenFromRequest(req);
+//        // JWT 토큰 substring
+//        String token = jwtUtil.substringToken(tokenValue);
+//
+//        // 토큰 검증
+//        if(!jwtUtil.validateToken(token)){
+//            throw new IllegalArgumentException("Token Error");
+//        }
+//
+//        return token;
+//    }
 }

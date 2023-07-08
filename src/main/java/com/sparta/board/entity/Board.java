@@ -15,14 +15,20 @@ public class Board extends Timestamped{
     private Long id;
     @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "username", nullable = false) // foreign key 어캐하지?
-    private String username;
+//    @Column(name = "username", nullable = false)
+//    private String username;
     @Column(name = "contents", nullable = false, length = 500)
     private String contents;
 
-    public Board(BoardRequestDto requestDto, String username) {
+    @ManyToOne
+    private User user;
+    @OneToMany(mappedBy = "board")
+    private List<Comment> comments = new ArrayList<>();
+
+    public Board(BoardRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
-        this.username = username;
+        this.user = user;
+//        this.username = user.getUsername();
         this.contents = requestDto.getContents();
     }
 

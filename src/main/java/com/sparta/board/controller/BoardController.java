@@ -32,11 +32,11 @@ public class BoardController {
 //        return boardService.createBoard(requestDto, user);
         return new ResponseEntity<>(boardService.createBoard(requestDto, user), HttpStatus.CREATED) ;
     }
-
+    // 작성시간 기준으로 내림차순 정렬하여 모든 게시글 출력
     @GetMapping()
     public ResponseEntity<List<BoardResponseDto>> getBoards() {
 //        return boardService.getBoards();
-        return new ResponseEntity<>(boardService.getBoards(), HttpStatus.OK);
+        return new ResponseEntity<>(boardService.getAllBoards(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

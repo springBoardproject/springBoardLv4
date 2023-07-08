@@ -26,6 +26,11 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
+    @OneToMany(mappedBy = "user")
+    private List<Board> boards = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private  List<Comment> comments = new ArrayList<>();
+
 
     // service에서 중복확인, 비밀번호 암호화를 진행한뒤 값을 넣어줌
     public User(String username, String password, UserRoleEnum role) {

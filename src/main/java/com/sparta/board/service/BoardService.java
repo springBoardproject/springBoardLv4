@@ -27,15 +27,18 @@ public class BoardService {
 
     public BoardResponseDto createBoard(BoardRequestDto requestDto, User user) {
         System.out.println("user.getUsername() = " + user.getUsername());
-        Board board = new Board(requestDto, user.getUsername());
+        Board board = new Board(requestDto, user);
         // DB 저장 넘겨주기
         Board saveBoard = boardRepository.save(board);
         // Entity -> ResponseDto
         return new BoardResponseDto(saveBoard);
     }
-    public List<BoardResponseDto> getBoards() {
+    public List<BoardResponseDto> getAllBoards() {
         // db 조회 넘겨주기
-        return boardRepository.findAllByOrderByCreatedAtDesc().stream().map(BoardResponseDto::new).toList();
+        return boardRepository.findAllByOrderByCreatedAtDesc()
+                .stream()
+                .map(BoardResponseDto::new)
+                .toList();
     }
 
     public BoardResponseDto getSelectedBoard(Long id) {
@@ -50,7 +53,7 @@ public class BoardService {
         // 해당 메모가 DB에 존재하는지 확인
         Board board = findBoard(id);
         // 권한 확인
-        checkAuthority(board, user);
+        jwtUtil.checkAuthority(board, user);
         // 수정
         board.update(requestDto);
         // Entity -> ResponseDto
@@ -61,7 +64,7 @@ public class BoardService {
         // 해당 메모가 DB에 존재하는지 확인
         Board board = findBoard(id);
         // 권한 확인
-        checkAuthority(board, user);
+        jwtUtil.checkAuthority(board, user);
         // 삭제
         boardRepository.delete(board);
 
@@ -69,7 +72,7 @@ public class BoardService {
 
     }
 
-    private Board findBoard(Long id) {
+    protected Board findBoard(Long id) {
         return boardRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("존재하지 않는 게시물 입니다.")
         );
@@ -84,13 +87,5 @@ public class BoardService {
 //        return username;
 //    }
     
-    private void checkAuthority(Board board, User user) {
-        // admin 확인
-        if(!user.getRole().getAuthority().equals("ROLE_ADMIN")){
-            // username 확인
-            if (!board.getUsername().equals(user.getUsername())) {
-                throw new IllegalArgumentException("작성자가 아닙니다.");
-            }
-        }
-    }
+
 }

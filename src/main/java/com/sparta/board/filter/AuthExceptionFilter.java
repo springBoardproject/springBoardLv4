@@ -22,16 +22,17 @@ import java.io.IOException;
 @Order(1)
 public class AuthExceptionFilter extends OncePerRequestFilter {
 
-    // 제대로 이해 못한 상태
+    // 제대로 이해 못한 상태?
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
         try{
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.error(e.getMessage());
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            StatusCodesResponseDto statusCodesResponseDto = new StatusCodesResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+            response.setCharacterEncoding("UTF-8");
+            StatusCodesResponseDto statusCodesResponseDto = new StatusCodesResponseDto(HttpStatus.BAD_REQUEST.value(), "토큰이 유효하지 않습니다.");
 
             String json = new ObjectMapper().writeValueAsString(statusCodesResponseDto);
 

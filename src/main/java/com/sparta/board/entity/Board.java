@@ -25,7 +25,7 @@ public class Board extends Timestamped{
 
     @ManyToOne
     private User user;
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     public Board(BoardRequestDto requestDto, User user) {

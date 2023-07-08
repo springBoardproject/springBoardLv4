@@ -145,7 +145,7 @@ public class JwtUtil {
 //            System.out.println("user.hashCode() = " + user.hashCode());
 //            if (!board.getUser().equals(user)) { // 왜 다른 걸까나...
             if (!board.getUser().getUsername().equals(user.getUsername())) {
-                throw new IllegalArgumentException("작성자가 아닙니다.");
+                throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
             }
         }
     }
@@ -154,7 +154,7 @@ public class JwtUtil {
         // admin 확인
         if(!user.getRole().getAuthority().equals("ROLE_ADMIN")){
             if (!comment.getUser().getUsername().equals(user.getUsername())) {
-                throw new IllegalArgumentException("작성자가 아닙니다.");
+                throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
             }
         }
     }

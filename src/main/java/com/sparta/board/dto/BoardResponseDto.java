@@ -24,6 +24,7 @@ public class BoardResponseDto {
         this.contents = board.getContents();
         this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
+        // board의 list comment로 부터 값을 가져와서 stream으로 dto형태로 변경, 작성일 내림차순 정렬
         this.comments = board.getComments()
                 .stream()
                 .map(CommentResponseDto::new)

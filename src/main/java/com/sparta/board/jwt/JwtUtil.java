@@ -117,7 +117,6 @@ public class JwtUtil {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(AUTHORIZATION_HEADER)) {
                     try {
-                        System.out.println(URLDecoder.decode(cookie.getValue(), "UTF-8"));
                         return URLDecoder.decode(cookie.getValue(), "UTF-8"); // Encode 되어 넘어간 Value(공백 인코딩) 다시 Decode
                     } catch (UnsupportedEncodingException e) {
                         return null;
@@ -137,25 +136,8 @@ public class JwtUtil {
         throw new IllegalArgumentException("토큰이 존재하지 않습니다. 로그인 해주세요.");
     }
 
-    public void checkAuthority(Board board, User user) {
-        // admin 확인
-        if(!user.getRole().getAuthority().equals("ROLE_ADMIN")){
-            // username 확인
-//            System.out.println("board.getUser().hashCode() = " + board.getUser().hashCode());
-//            System.out.println("user.hashCode() = " + user.hashCode());
-//            if (!board.getUser().equals(user)) { // 왜 다른 걸까나...
-            if (!board.getUser().getUsername().equals(user.getUsername())) {
-                throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
-            }
-        }
-    }
-
-    public void checkAuthority(Comment comment, User user) {
-        // admin 확인
-        if(!user.getRole().getAuthority().equals("ROLE_ADMIN")){
-            if (!comment.getUser().getUsername().equals(user.getUsername())) {
-                throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
-            }
-        }
+    // HttpServletRequest에서 user정보를 가져오는 일이 많아서 따로 메서드 작성
+    public User getUserInfoFromRequest(HttpServletRequest request) {
+        return (User) request.getAttribute("user");
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // IllegalArgumentException 처리
     @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<StatusCodesResponseDto> handleException(IllegalArgumentException ex) {
         StatusCodesResponseDto restApiException = new StatusCodesResponseDto(
@@ -22,7 +23,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST
         );
     }
-
+    // MethodArgumentNotValidException (requestDto에서 valid 관련해서 생기는 예외) 처리
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<StatusCodesResponseDto> handleException(MethodArgumentNotValidException ex) {
         StatusCodesResponseDto restApiException = new StatusCodesResponseDto(

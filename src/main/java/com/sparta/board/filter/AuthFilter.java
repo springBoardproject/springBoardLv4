@@ -27,12 +27,11 @@ public class AuthFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String url = httpServletRequest.getRequestURI();
 
+        // 회원가입, 로그인 관련 API, boards에서의 get 요청은 인증 필요없이 진행
         if (StringUtils.hasText(url) &&
                 (url.startsWith("/users") ||
-                        (url.startsWith("/boards") && ((HttpServletRequest) request).getMethod().equals("GET")) )
-        ) {
+                        (url.startsWith("/boards") && ((HttpServletRequest) request).getMethod().equals("GET")) )) {
             log.info("인증처리 하지 않는 url : " + url);
-            // 회원가입, 로그인 관련 API 는 인증 필요없이 요청 진행
             chain.doFilter(request, response); // 다음 Filter 로 이동
         } else {
             // 나머지 API 요청은 인증 처리 진행

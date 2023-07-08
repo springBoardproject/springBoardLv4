@@ -6,7 +6,6 @@ import com.sparta.board.dto.StatusCodesResponseDto;
 import com.sparta.board.entity.Board;
 import com.sparta.board.entity.Comment;
 import com.sparta.board.entity.User;
-import com.sparta.board.jwt.JwtUtil;
 import com.sparta.board.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,6 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final BoardService boardService;
-    private final JwtUtil jwtUtil;
 
     public CommentResponseDto createComment(Long boardId, CommentRequestDto requestDto, User user) {
         // 해당 게시글이 DB에 존재하는지 확인
@@ -58,7 +56,17 @@ public class CommentService {
 
     private Comment findComment(Long id) {
         return commentRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("존재하지 않는 게시물 입니다.")
+                new IllegalArgumentException("존재하지 않는 댓글 입니다.")
         );
+    }
+    // 수정, 삭제시 권한을 확인 .
+    public void checkAuthority(Comment comment, User user) {
+        // admin 확인
+        if(!user.getRole().getAuthority().equals("ROLE_ADMIN")){
+            // 작성자 본인 확인
+            if (!comment.getUser().getUsername().equals(user.getUsername())) {
+                throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
+            }
+        }
     }
 }

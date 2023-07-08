@@ -12,7 +12,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<StatusCodesResponseDto> handleException(IllegalArgumentException ex) {
-        StatusCodesResponseDto restApiException = new StatusCodesResponseDto(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        StatusCodesResponseDto restApiException = new StatusCodesResponseDto(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage());
         return new ResponseEntity<>(
                 // HTTP body
                 restApiException,
@@ -23,7 +25,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<StatusCodesResponseDto> handleException(MethodArgumentNotValidException ex) {
-        StatusCodesResponseDto restApiException = new StatusCodesResponseDto(HttpStatus.BAD_REQUEST.value(), ex.getFieldError().getDefaultMessage());
+        StatusCodesResponseDto restApiException = new StatusCodesResponseDto(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getFieldError().getDefaultMessage());
         return new ResponseEntity<>(
                 // HTTP body
                 restApiException,

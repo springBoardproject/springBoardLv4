@@ -27,11 +27,12 @@ public class UserService {
     @Value("${adimin.token}") // Base64 Encode 한 SecretKey
     private String ADMIN_TOKEN;
 
+    //회원가입
     public StatusCodesResponseDto signup(SignupRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
-        // 회원 중복 확인
+        //회원 중복 확인
         Optional<User> checkUsername = userRepository.findByUsername(username);
         if (checkUsername.isPresent()) {
             throw new IllegalArgumentException("중복된 username 입니다.");
@@ -50,11 +51,10 @@ public class UserService {
         User user = new User(username, password, role);
         userRepository.save(user);
 
-        // return
-        StatusCodesResponseDto responseDto = new StatusCodesResponseDto(HttpStatus.CREATED.value(), "회원가입 성공");
-        return responseDto;
+        return  new StatusCodesResponseDto(HttpStatus.CREATED.value(), "회원가입 성공");
     }
 
+    //로그인
     public StatusCodesResponseDto login(LoginRequestDto requestDto, HttpServletResponse jwtResponse) {
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
@@ -72,8 +72,6 @@ public class UserService {
         // Jwt 쿠키 저장
         jwtUtil.addJwtToCookie(token, jwtResponse);
 
-        StatusCodesResponseDto responseDto = new StatusCodesResponseDto(HttpStatus.OK.value(), "로그인 성공");
-
-        return responseDto;
+        return new StatusCodesResponseDto(HttpStatus.OK.value(), "로그인 성공");
     }
 }

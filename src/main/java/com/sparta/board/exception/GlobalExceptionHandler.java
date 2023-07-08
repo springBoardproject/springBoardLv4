@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+// RestController내에서 발생하는 예외들을 처리
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

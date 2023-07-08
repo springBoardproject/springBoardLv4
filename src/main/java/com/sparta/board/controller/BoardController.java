@@ -36,11 +36,13 @@ public class BoardController {
         return new ResponseEntity<>(boardService.getAllBoards(), HttpStatus.OK);
     }
 
+    //선택한 게시글 가져오기
     @GetMapping("/{id}")
     public ResponseEntity<BoardResponseDto> getSelectedBoard(@PathVariable Long id) {
         return new ResponseEntity<>(boardService.getSelectedBoard(id), HttpStatus.OK);
     }
 
+    //선택한 게시글 내용 수정
     @PutMapping("/{id}")
     public ResponseEntity<BoardResponseDto> updateBoard(@PathVariable Long id,
                                         @RequestBody @Valid BoardRequestDto requestDto,
@@ -49,6 +51,7 @@ public class BoardController {
         return new ResponseEntity<>(boardService.updateBoard(id, requestDto, user), HttpStatus.OK);
     }
 
+    //선택한 게시글 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<StatusCodesResponseDto> deleteBoard(@PathVariable Long id,
                                       HttpServletRequest request) {

@@ -35,7 +35,7 @@ public class CommentService {
         // 댓글 저장유무 확인
         Comment comment = findComment(commentId);
         // 권한 확인
-        jwtUtil.checkAuthority(comment, user);
+        checkAuthority(comment, user);
         // 수정
         comment.update(requestDto);
         // Entity -> ResponseDto
@@ -46,7 +46,7 @@ public class CommentService {
         // 댓글 저장유무 확인
         Comment comment = findComment(commentId);
         // 권한 확인
-        jwtUtil.checkAuthority(comment, user);
+        checkAuthority(comment, user);
         // 삭제
         commentRepository.delete(comment);
 

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/boards/{boardId}/comments")
+@RequestMapping("/comments")
 public class CommentController {
 
     private final CommentService commentService;
@@ -39,6 +39,7 @@ public class CommentController {
         return new ResponseEntity<>(commentService.updateComment(commentid, requestDto, user), HttpStatus.OK);
     }
 
+    // 특정 게시글의 댓글 삭제
     @DeleteMapping("/{commentid}")
     public ResponseEntity<StatusCodesResponseDto> deleteBoard(@PathVariable Long commentid,
                                                               HttpServletRequest request) {

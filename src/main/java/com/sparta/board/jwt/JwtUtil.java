@@ -128,15 +128,15 @@ public class JwtUtil {
                 }
             }
         }
-        // 쿠키 없는 경우 헤더에서 값 가져오기
-        String header = req.getHeader(AUTHORIZATION_HEADER);
-        if (!header.isEmpty()) {
-            try {
-                return URLDecoder.decode(header, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                throw null;
-            }
-        }
+//        // 쿠키 없는 경우 헤더에서 값 가져오기
+//        String header = req.getHeader(AUTHORIZATION_HEADER);
+//        if (!header.isEmpty()) {
+//            try {
+//                return URLDecoder.decode(header, "UTF-8");
+//            } catch (UnsupportedEncodingException e) {
+//                throw null;
+//            }
+//        }
         throw new IllegalArgumentException("토큰이 존재하지 않습니다. 로그인 해주세요.");
     }
 

@@ -78,7 +78,7 @@ public class BoardService {
         if (!user.getRole().getAuthority().equals("ROLE_ADMIN")) {
             // username만 확인하는 것 보다 이쪽이 더 안전하다고 생각하여 작성하였으나 true가 나오지 않음.
 //            if (!board.getUser().equals(user)) {
-            if (!board.getUser().getUsername().equals(user.getUsername())) {
+            if (board.getUser().getId() != user.getId()) {
                 throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
             }
         }

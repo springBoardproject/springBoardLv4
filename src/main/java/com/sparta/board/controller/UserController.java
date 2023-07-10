@@ -26,8 +26,8 @@ public class UserController {
     }
 
     // 로그인
-    @PostMapping("/login")
-    public StatusCodesResponseDto login(@RequestBody LoginRequestDto requestDto, HttpServletResponse JwtResponse) {
-        return userService.login(requestDto, JwtResponse);
-    }
+//    @PostMapping("/login")
+//    public StatusCodesResponseDto login(@RequestBody LoginRequestDto requestDto, HttpServletResponse JwtResponse) {
+//        return userService.login(requestDto, JwtResponse);
+//    }
 }

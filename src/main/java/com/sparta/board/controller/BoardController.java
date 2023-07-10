@@ -5,12 +5,14 @@ import com.sparta.board.dto.BoardResponseDto;
 import com.sparta.board.dto.StatusCodesResponseDto;
 import com.sparta.board.entity.User;
 import com.sparta.board.jwt.JwtUtil;
+import com.sparta.board.security.UserDetailsImpl;
 import com.sparta.board.service.BoardService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +28,8 @@ public class BoardController {
     //게시글 작성
     @PostMapping()
     public ResponseEntity<BoardResponseDto> createBoard(@RequestBody @Valid BoardRequestDto requestDto,
-                                        HttpServletRequest request) {
-        User user = jwtUtil.getUserInfoFromRequest(request);
+                                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
         return new ResponseEntity<>(boardService.createBoard(requestDto, user), HttpStatus.CREATED) ;
     }
     // 작성시간 기준으로 내림차순 정렬하여 모든 게시글 출력

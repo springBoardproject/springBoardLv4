@@ -17,8 +17,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Slf4j(topic = "JWT 검증 및 인가")
-public class JwtAuthorizationFilter extends OncePerRequestFilter {
+//@Component
+@RequiredArgsConstructor
+@Slf4j(topic = "JWT 검증 및 인가")  //인증 및 인가
+public class JwtAuthorizationFilter extends OncePerRequestFilter {  //무조건 필터를 거친다...
 
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
@@ -70,4 +72,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
+
+
 }

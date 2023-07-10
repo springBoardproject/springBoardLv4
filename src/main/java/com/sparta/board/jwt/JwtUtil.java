@@ -1,7 +1,5 @@
 package com.sparta.board.jwt;
 
-import com.sparta.board.entity.Board;
-import com.sparta.board.entity.Comment;
 import com.sparta.board.entity.User;
 import com.sparta.board.entity.UserRoleEnum;
 import io.jsonwebtoken.*;

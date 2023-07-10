@@ -54,24 +54,24 @@ public class UserService {
         return  new StatusCodesResponseDto(HttpStatus.CREATED.value(), "회원가입 성공");
     }
 
-//    //로그인    security filter에서 함.
-//    public StatusCodesResponseDto login(LoginRequestDto requestDto, HttpServletResponse jwtResponse) {
-//        String username = requestDto.getUsername();
-//        String password = requestDto.getPassword();
-//
-//        // 사용자 확인
-//        User user = userRepository.findByUsername(username).orElseThrow(() -> //Optional<T>에 orElseThrow 메서드는 결과값이 T로 나온다 (User)
-//                new IllegalArgumentException("회원을 찾을 수 없습니다."));
-//        // 비밀번호 확인
-//        if (!passwordEncoder.matches(password, user.getPassword())) {
-//            throw new IllegalArgumentException("회원을 찾을 수 없습니다.");
-//        }
-//
-//        // Jwt 토큰 생성, response에 넣기
-//        String token = jwtUtil.createToken(user.getUsername(), user.getRole());
-//        // Jwt 쿠키 저장
-//        jwtUtil.addJwtToCookie(token, jwtResponse);
-//
-//        return new StatusCodesResponseDto(HttpStatus.OK.value(), "로그인 성공");
-//    }
+//    //로그인    security filter에서 하는 방법도 있는데 이게 더 맞는 방법.
+    public StatusCodesResponseDto login(LoginRequestDto requestDto, HttpServletResponse jwtResponse) {
+        String username = requestDto.getUsername();
+        String password = requestDto.getPassword();
+
+        // 사용자 확인
+        User user = userRepository.findByUsername(username).orElseThrow(() -> //Optional<T>에 orElseThrow 메서드는 결과값이 T로 나온다 (User)
+                new IllegalArgumentException("회원을 찾을 수 없습니다."));
+        // 비밀번호 확인
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("회원을 찾을 수 없습니다.");
+        }
+
+        // Jwt 토큰 생성, response에 넣기
+        String token = jwtUtil.createToken(user.getUsername(), user.getRole());
+        // Jwt 쿠키 저장
+        jwtUtil.addJwtToCookie(token, jwtResponse);
+
+        return new StatusCodesResponseDto(HttpStatus.OK.value(), "로그인 성공");
+    }
 }

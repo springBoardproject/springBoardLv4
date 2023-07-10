@@ -1,4 +1,4 @@
-package com.sparta.board.filter;
+package com.sparta.board.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.board.dto.StatusCodesResponseDto;
@@ -7,10 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -18,7 +16,6 @@ import java.io.IOException;
 @Slf4j(topic = "AuthFilter")
 //@Component
 @RequiredArgsConstructor
-@Order(1)
 public class AuthExceptionFilter extends OncePerRequestFilter {
 
     @Override

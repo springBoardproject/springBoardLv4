@@ -1,9 +1,10 @@
 package com.sparta.board.config;
 
-import com.sparta.board.jwt.JwtAuthenticationFilter;
+import com.sparta.board.jwt.AuthExceptionFilter;
 import com.sparta.board.jwt.JwtAuthorizationFilter;
 import com.sparta.board.jwt.JwtUtil;
 import com.sparta.board.security.UserDetailsServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,9 +12,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity // Spring Security 지원을 가능하게 함
@@ -21,29 +24,35 @@ public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
-    private final AuthenticationConfiguration authenticationConfiguration;
 
-    public WebSecurityConfig(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService, AuthenticationConfiguration authenticationConfiguration) {
-        this.jwtUtil = jwtUtil;
-        this.userDetailsService = userDetailsService;
-        this.authenticationConfiguration = authenticationConfiguration;
-    }
+//    public WebSecurityConfig(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService) {
+//        this.jwtUtil = jwtUtil;
+//        this.userDetailsService = userDetailsService;
+//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil);
-        filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
-        return filter;
-    }
+//    @Bean
+//    public AuthExceptionFilter authExceptionFilter() {
+//        return new AuthExceptionFilter();
+//    }
+//
+//    @Bean
+//    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+//        JwtAuthorizationFilter jwtAuthorizationFilter = new JwtAuthorizationFilter(jwtUtil, userDetailsService);
+//        return jwtAuthorizationFilter;
+//    }
 
     @Bean
-    public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(jwtUtil, userDetailsService);
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return web -> {
+            web.ignoring()
+                    .requestMatchers(new AntPathRequestMatcher("/users/**"))
+                    .requestMatchers( new AntPathRequestMatcher("/boards", "GET"));
+        };
     }
 
     @Bean
@@ -58,9 +67,10 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
-                        .requestMatchers("/users/**").permitAll() // '/users/'로 시작하는 요청 모두 접근 허가
+                        .requestMatchers("/users/**").permitAll() // '/users/'로 시작하는 요청 모두 접근 허가  . 권한이 있지 않지만 통과시켜준다.
                         .requestMatchers(HttpMethod.GET, "/boards/**").permitAll() // '/boards/'로 시작하는 요청중 get method 모두 접근 허가
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
+                //permitAll과 ignoring의 차이점...
         );
 
 //        http.formLogin((formLogin) -> {
@@ -70,10 +80,9 @@ public class WebSecurityConfig {
 //        });
 
 
-        // 필터 관리
-        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
+        // 필터 관리  +@Order로 순서를 정하면 정상적으로 작동하지 않음. 여러 필터들의 순서가 꼬이기 때문이지 않을까?
+        http.addFilterBefore(new JwtAuthorizationFilter(jwtUtil,userDetailsService), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new AuthExceptionFilter(), JwtAuthorizationFilter.class);
         return http.build();
     }
 }

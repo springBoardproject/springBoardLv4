@@ -13,7 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Slf4j(topic = "AuthFilter")
+@Slf4j(topic = "AuthFilter exception")
 //@Component
 @RequiredArgsConstructor
 public class AuthExceptionFilter extends OncePerRequestFilter {

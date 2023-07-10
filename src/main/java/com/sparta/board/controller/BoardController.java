@@ -46,17 +46,17 @@ public class BoardController {
     //선택한 게시글 내용 수정
     @PutMapping("/{id}")
     public ResponseEntity<BoardResponseDto> updateBoard(@PathVariable Long id,
-                                        @RequestBody @Valid BoardRequestDto requestDto,
-                                        HttpServletRequest request) {
-        User user = jwtUtil.getUserInfoFromRequest(request);
+                                                        @RequestBody @Valid BoardRequestDto requestDto,
+                                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
         return new ResponseEntity<>(boardService.updateBoard(id, requestDto, user), HttpStatus.OK);
     }
 
     //선택한 게시글 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<StatusCodesResponseDto> deleteBoard(@PathVariable Long id,
-                                      HttpServletRequest request) {
-        User user = jwtUtil.getUserInfoFromRequest(request);
+                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
         return new ResponseEntity<>(boardService.deleteBoard(id, user), HttpStatus.OK);
     }
 }

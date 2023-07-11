@@ -16,10 +16,10 @@ public class Comment extends Timestamped{
 
     private String comments;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     public Comment(CommentRequestDto requestDto, Board board, User user) {

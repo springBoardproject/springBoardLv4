@@ -21,10 +21,10 @@ public class Board extends Timestamped{
     @Column(name = "contents", nullable = false, length = 500)
     private String contents;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
     // board 삭제시 comment가 같이 삭제되도록 cascade 추가
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
     public Board(BoardRequestDto requestDto, User user) {
